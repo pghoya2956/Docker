@@ -1,0 +1,18 @@
+version: '3.8'
+
+networks:
+  monitoring:
+    name: monitoring
+    driver: bridge
+
+services:
+  kafka-exporter:
+    container_name: kafka-exporter
+    image: danielqsj/kafka-exporter:v1.5.0
+    ports:
+      - 9308:9308
+    command:
+      - '--kafka.server=broker:9093'
+      - '--zookeeper.server=zookeeper:2181'
+    networks:
+      - monitoring

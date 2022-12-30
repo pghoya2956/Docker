@@ -1,0 +1,32 @@
+version: '3.8'
+
+networks:
+  monitoring:
+    driver: bridge
+
+services:
+  cadvisor:
+    image: google/cadvisor:v0.33.0
+    container_name: cadvisor
+    restart: unless-stopped
+    privileged: true
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      # Window에서 Wsl을 이용할 때는 실제 도커 데이터가 있는 폴더를 Wsl 구조에 맞게 마운트 시켜줘야 함
+      # sudo mount -t drvfs '\\wsl.localhost\docker-desktop-data\data\docker' /mnt/wsl/docker-desktop-data/data/docker -o ro,umask=022
+      # 마운트 해제: sudo umount /mnt/wsl/docker-desktop-data/data/docker
+      # 사용중인 프로세스 kill: fuser -ck /mnt/wsl/docker-desktop-data/data/docker
+      # - /mnt/wsl/docker-desktop-data/data/docker/:/rootfs/var/lib/docker/
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - /var/lib/dbus/machine-id:/var/lib/dbus/machine-id:ro
+    ports:
+      - 9990:8080
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    networks:
+      - monitoring
