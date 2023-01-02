@@ -7,10 +7,10 @@ if ! [ -x "$(command -v docker-compose)" ]; then
 fi
 
 # Set config
-domains=(www.seoitv-ai.com seoitv-ai.com)
+domains=(example.com www.example.com)
 rsa_key_size=4096
 data_path="./data/certbot"
-email="ghdi7662@gmail.com" # Adding a valid address is strongly recommended
+email="{email}" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 # Check directory existance
@@ -38,7 +38,7 @@ docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
-    -subj '/C=KR/ST=Anyang/L=Dongan/O=SEO/OU=Artificial Intelligence R&D Team/CN=seoitv-ai.com'" certbot
+    -subj '/C=nation/ST=city/L=location/O=company/OU=team/CN=domain'" certbot
 echo
 
 
